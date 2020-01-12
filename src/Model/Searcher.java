@@ -16,7 +16,7 @@ import static Model.Model.isStem;
 
 public class Searcher {
     private TextParse qParser;
-    private Ranker ranker;
+    public Ranker ranker;
     private SynonymFinder synonymFinder;
     private Word2Vec w2v;
     private String posting_Path;

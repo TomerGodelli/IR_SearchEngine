@@ -39,7 +39,7 @@ public class Model extends Observable {
 
     protected HashMap<String, List<Pair<String, Double>>> multiQueryResult = new HashMap<>();
     protected HashMap<String, List<Pair<String, Double>>> sortedResultDocName = new HashMap<>();
-    protected HashMap<String, String> fromDocNameToDocID= new HashMap<>();
+    protected HashMap<String, String> fromDocNameToDocID = new HashMap<>();
 
     //endregion
 
@@ -47,6 +47,7 @@ public class Model extends Observable {
 
     }
     //region PartA
+
     /**
      * this function start the creation of the inverted index
      */
@@ -262,7 +263,8 @@ public class Model extends Observable {
                     .forEach(File::delete);
             didDeletePosting = true;
         } catch (Exception e) {
-            System.out.println(e);        }
+            System.out.println(e);
+        }
 
         //-----------------delete pathes-------------------------
         posting_Path = "";
@@ -299,9 +301,9 @@ public class Model extends Observable {
 
         int wahtWasDeleted = 0;
 
-        if(didDeleteDicts && didDeletePosting) wahtWasDeleted =3;
-        else if(!didDeleteDicts && !didDeletePosting) wahtWasDeleted= 0;
-        else wahtWasDeleted= (didDeleteDicts) ? 1:2;
+        if (didDeleteDicts && didDeletePosting) wahtWasDeleted = 3;
+        else if (!didDeleteDicts && !didDeletePosting) wahtWasDeleted = 0;
+        else wahtWasDeleted = (didDeleteDicts) ? 1 : 2;
 
         //what was deleted:
         //0= nothing
@@ -476,6 +478,7 @@ public class Model extends Observable {
 
     /**
      * set use in synonym api
+     *
      * @param is_click
      */
     public void is_API_synonym(boolean is_click) {
@@ -484,6 +487,7 @@ public class Model extends Observable {
 
     /**
      * set use in word2vec model
+     *
      * @param isSemantic
      */
     public void semanticTreatment(boolean isSemantic) {
@@ -492,50 +496,54 @@ public class Model extends Observable {
 
     /**
      * this method start to query search
+     *
      * @param isOneQuery
      * @param q
      */
     public void runQuery(boolean isOneQuery, String q) {
-        fromDocNameToDocID = new HashMap<>();
-        if (isOneQuery) {
+        runQueryTest(q);
 
-            Searcher searcher = new Searcher(posting_Path);
-            HashMap<String, List<Pair<String, Double>>> MultyQueryResult = new HashMap<>();
-            List<Pair<String, Double>> ans = searcher.getRankedDocsFromQuery(q, "");
-            for (Pair<String, Double> p : ans) {
-
-                fromDocNameToDocID.put((docs.get(p.getKey())).getDocName(), p.getKey());
-            }
-            MultyQueryResult.put("123", ans);
-            is_one_query = true;
-            this.multiQueryResult = MultyQueryResult;
-            this.sortedResultDocName = sortAndUpdateResult();
-        } else { // multy
-            Searcher searcher = new Searcher(posting_Path);
-            is_one_query = false;
-            HashMap<String, Pair<String, String>> MultyQuery = parseMultiQuery(q); // pair of String query, description
-
-            HashMap<String, List<Pair<String, Double>>> MultyQueryResult = new HashMap<>();
-
-            for (Map.Entry<String, Pair<String, String>> entry : MultyQuery.entrySet()) {
-                //long s = System.currentTimeMillis();
-                List<Pair<String, Double>> ans = searcher.getRankedDocsFromQuery(entry.getValue().getKey(), entry.getValue().getValue());
-                // long f = System.currentTimeMillis();
-                // long dur = f - s;
-                // System.out.println(entry.getKey() + ": " + dur);
-                MultyQueryResult.put(entry.getKey(), ans);
-                for (Pair<String, Double> p : ans) {
-                    fromDocNameToDocID.put((docs.get(p.getKey())).getDocName(), p.getKey());
-                }
-            }
-            this.multiQueryResult = MultyQueryResult;
-            this.sortedResultDocName = sortAndUpdateResult();
-
-        }
+//        fromDocNameToDocID = new HashMap<>();
+//        if (isOneQuery) {
+//
+//            Searcher searcher = new Searcher(posting_Path);
+//            HashMap<String, List<Pair<String, Double>>> MultyQueryResult = new HashMap<>();
+//            List<Pair<String, Double>> ans = searcher.getRankedDocsFromQuery(q, "");
+//            for (Pair<String, Double> p : ans) {
+//
+//                fromDocNameToDocID.put((docs.get(p.getKey())).getDocName(), p.getKey());
+//            }
+//            MultyQueryResult.put("123", ans);
+//            is_one_query = true;
+//            this.multiQueryResult = MultyQueryResult;
+//            this.sortedResultDocName = sortAndUpdateResult();
+//        } else { // multy
+//            Searcher searcher = new Searcher(posting_Path);
+//            is_one_query = false;
+//            HashMap<String, Pair<String, String>> MultyQuery = parseMultiQuery(q); // pair of String query, description
+//
+//            HashMap<String, List<Pair<String, Double>>> MultyQueryResult = new HashMap<>();
+//
+//            for (Map.Entry<String, Pair<String, String>> entry : MultyQuery.entrySet()) {
+//                //long s = System.currentTimeMillis();
+//                List<Pair<String, Double>> ans = searcher.getRankedDocsFromQuery(entry.getValue().getKey(), entry.getValue().getValue());
+//                // long f = System.currentTimeMillis();
+//                // long dur = f - s;
+//                // System.out.println(entry.getKey() + ": " + dur);
+//                MultyQueryResult.put(entry.getKey(), ans);
+//                for (Pair<String, Double> p : ans) {
+//                    fromDocNameToDocID.put((docs.get(p.getKey())).getDocName(), p.getKey());
+//                }
+//            }
+//            this.multiQueryResult = MultyQueryResult;
+//            this.sortedResultDocName = sortAndUpdateResult();
+//
+//        }
     }
 
     /**
      * this method parse the query file and split all the queries
+     *
      * @param path
      * @return all the query with description
      */
@@ -577,7 +585,7 @@ public class Model extends Observable {
                 if (query[0].compareTo("") != 0 && query[1].compareTo("") != 0 && query[2].compareTo("") != 0 && !descLine) { // not empty
                     extractQuery.put(query[0], new Pair(query[1], query[2]));
                     // System.out.println("num: "+query[0]+" title: "+query[1]);
-                    System.out.println("desc: " + query[2]);
+                    //System.out.println("desc: " + query[2]);
                     query[1] = "";
                     query[0] = "";
                     query[2] = "";
@@ -594,7 +602,6 @@ public class Model extends Observable {
     }
 
     /**
-     *
      * @param desc
      * @return the description of the query without unnecessary words
      */
@@ -621,6 +628,7 @@ public class Model extends Observable {
 
     /**
      * this function sort the query result
+     *
      * @return
      */
     private HashMap<String, List<Pair<String, Double>>> sortAndUpdateResult() {
@@ -651,7 +659,6 @@ public class Model extends Observable {
     }
 
     /**
-     *
      * @param docName
      * @return top 5 entity of the current document
      */
@@ -674,7 +681,6 @@ public class Model extends Observable {
     }
 
     /**
-     *
      * @return the query result as string
      */
     public StringBuilder queryToString() {
@@ -697,7 +703,6 @@ public class Model extends Observable {
     }
 
     /**
-     *
      * @return the query result
      */
     public HashMap<String, List<Pair<String, Double>>> getResult() {
@@ -716,6 +721,117 @@ public class Model extends Observable {
     public boolean getIsAPIsyn() {
         return is_API_synonym;
     }
+
+    public void runQueryTest(String q) {
+        //File fr = new File("corpus");
+
+        double maxb = 0;
+        double maxk = 0;
+        double maxqw = 0;
+        double maxdw = 0;
+        double maxtw = 0;
+        double maxRet = 0;
+        for (double b = 0.5; b <= 1; b += 0.1) {
+            for (double k = 1.2; k <= 2; k += 0.1) {
+                for (double qw = 0.1; qw <= 1; qw += 0.1) {
+                    for (double dw = 0.1; dw <= 1-qw; dw += 0.1) {
+                        double tw = 1-qw-dw;
+                        System.out.printf("running  b=%f  k=%f qw=%f dw=%f tw=%f %n", b, k, qw, dw, tw);
+
+                        //region runQuery
+                        fromDocNameToDocID = new HashMap<>();
+                        Searcher searcher = new Searcher(posting_Path);
+                        searcher.ranker.setParams(b, k, qw, dw, tw);
+                        is_one_query = false;
+                        HashMap<String, Pair<String, String>> MultyQuery = parseMultiQuery(q); // pair of String query, description
+                        HashMap<String, List<Pair<String, Double>>> MultyQueryResult = new HashMap<>();
+
+                        for (Map.Entry<String, Pair<String, String>> entry : MultyQuery.entrySet()) {
+                            List<Pair<String, Double>> ans = searcher.getRankedDocsFromQuery(entry.getValue().getKey(), entry.getValue().getValue());
+                            MultyQueryResult.put(entry.getKey(), ans);
+                            for (Pair<String, Double> p : ans) {
+                                fromDocNameToDocID.put((docs.get(p.getKey())).getDocName(), p.getKey());
+                            }
+                        }
+                        this.multiQueryResult = MultyQueryResult;
+                        this.sortedResultDocName = sortAndUpdateResult();
+                        //endregion
+
+                        //region save resoult file
+                        StringBuilder query = queryToString();
+                        try {
+
+                            String name = "C:\\Users\\tomer\\Documents\\IR\\Trec\\" + "r.txt";
+                            BufferedWriter bwr = new BufferedWriter(new FileWriter(new File(name)));
+
+                            //write contents of StringBuffer to a file
+                            bwr.write(query.toString());
+
+                            //flush the stream
+                            bwr.flush();
+
+                            //close the stream
+                            bwr.close();
+
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        //endregion
+
+                        //region run trec eval
+                        try {
+                            String[] command = {"cmd.exe", "/c", "treceval -q qrel.txt r.txt > out.txt"};
+                            ProcessBuilder builder = new ProcessBuilder(command);
+                            builder = builder.directory(new File("C:\\Users\\tomer\\Documents\\IR\\Trec"));
+                            Process p = builder.start();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        //endregion
+
+                        //region read outputFIle
+                        File f = new File("C:\\Users\\tomer\\Documents\\IR\\Trec\\out.txt");
+                        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
+                            String line;
+                            int lineIndex = 0;
+                            while ((line = br.readLine()) != null) {
+                                if (lineIndex > 480) {
+                                    if (line.contains("Rel_ret")) {
+                                        String[] lineSplit = line.split(" ");
+                                        int ret = Integer.parseInt(lineSplit[lineSplit.length - 1]);
+                                        if (ret > maxRet) {
+                                            maxRet = ret;
+                                            System.out.printf("new best: Ret= %d   b=%f  k=%f qw=%f dw=%f tw=%f %n", ret, b, k, qw, dw, tw);
+                                            maxb = b;
+                                            maxk = k;
+                                            maxqw = qw;
+                                            maxdw = dw;
+                                            maxtw = tw;
+                                        }
+                                    }
+                                }
+                                lineIndex++;
+
+                            }
+
+                        } catch (IOException io) {
+                            io.printStackTrace();
+                        }
+                        //endregion
+
+
+                    }
+
+                }
+
+            }
+
+        }
+
+
+    }
+
 //endregion
 
 }

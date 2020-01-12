@@ -20,11 +20,13 @@ public class Ranker {
 
     private HashMap<String, Double> rankedDocs = new HashMap<>();
 
-    private final double k1 = 1.8;
-    private final double b = 0.95;
-    private final double BM25_QUERY_WEIGHT = 0.4;
-    private final double BM25_DESCRIPTION_WEIGHT = 0.4;
-    private final double TITLE_WEIGHT = 0.2;
+
+
+    private double k1 = 1.8;
+    private double b = 0.95;
+    private double BM25_QUERY_WEIGHT = 0.4;
+    private double BM25_DESCRIPTION_WEIGHT = 0.4;
+    private double TITLE_WEIGHT = 0.2;
 
     //0.5,0.5,0 = 178,0.58,0.213,0.178
     //0.4,0.6,0 = 175,0.51,0.16,0.18
@@ -208,4 +210,34 @@ public class Ranker {
             }
         }
     }
+
+    public void setK(double k1) {
+        this.k1 = k1;
+    }
+
+    public void setB(double b) {
+        this.b = b;
+    }
+
+    public void setBM25_QUERY_WEIGHT(double BM25_QUERY_WEIGHT) {
+        this.BM25_QUERY_WEIGHT = BM25_QUERY_WEIGHT;
+    }
+
+    public void setBM25_DESCRIPTION_WEIGHT(double BM25_DESCRIPTION_WEIGHT) {
+        this.BM25_DESCRIPTION_WEIGHT = BM25_DESCRIPTION_WEIGHT;
+    }
+
+    public void setTITLE_WEIGHT(double TITLE_WEIGHT) {
+        this.TITLE_WEIGHT = TITLE_WEIGHT;
+    }
+
+    public void setParams(double b,double k,double qw,double dw,double tw) {
+        this.b = b;
+        this.k1 = k;
+        this.BM25_QUERY_WEIGHT = qw;
+        this.BM25_DESCRIPTION_WEIGHT = dw;
+        this.TITLE_WEIGHT = tw;
+    }
+
+
 }
