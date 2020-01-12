@@ -18,12 +18,12 @@ public class Ranker {
 
     private HashMap<String, Double> rankedDocs = new HashMap<>();
 
-    private final double k1 = 1.8;
-    private final double b = 0.95;
-    private final double BM25_QUERY_WEIGHT = 0.4;
-    private final double BM25_DESCRIPTION_WEIGHT = 0.4;
-    private final double TITLE_WEIGHT = 0.2;
-    private final double LAMBDA = 0.4;
+    private double k1 = 1.8;
+    private double b = 0.95;
+    private double BM25_QUERY_WEIGHT = 0.4;
+    private double BM25_DESCRIPTION_WEIGHT = 0.4;
+    private double TITLE_WEIGHT = 0.2;
+    private double LAMBDA = 0.4;
 
     private double avgDocLength;
     private double namOfDocumentInCorpus;
@@ -211,4 +211,14 @@ public class Ranker {
             }
         }
     }
+
+    public void setParams(double b,double k,double lambda,double qw,double dw,double tw) {
+        this.b = b;
+        this.k1 = k;
+        this.LAMBDA = lambda;
+        this.BM25_QUERY_WEIGHT = qw;
+        this.BM25_DESCRIPTION_WEIGHT = dw;
+        this.TITLE_WEIGHT = tw;
+    }
+
 }
