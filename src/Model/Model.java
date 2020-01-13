@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class Model extends Observable {
@@ -501,7 +502,11 @@ public class Model extends Observable {
      * @param q
      */
     public void runQuery(boolean isOneQuery, String q) {
-        runQueryTest(q);
+        try {
+            runQueryTest(q);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 //        fromDocNameToDocID = new HashMap<>();
 //        if (isOneQuery) {
@@ -723,7 +728,7 @@ public class Model extends Observable {
         return is_API_synonym;
     }
 
-    public void runQueryTest(String q) {
+    public void runQueryTest(String q) throws InterruptedException {
         //File fr = new File("corpus");
         StringBuilder resultToCsv = new StringBuilder();
         resultToCsv.append("ret,K,B,Lamda,queryWeight,DescWeight,TitleWeight\n");
@@ -788,6 +793,8 @@ public class Model extends Observable {
                             }
                             //endregion
 
+                            TimeUnit.SECONDS.sleep(2);
+
                             //region read outputFIle
                             File f = new File("C:\\Users\\tomer\\Documents\\IR\\Trec\\out.txt");
                             try (BufferedReader br = new BufferedReader(new FileReader(f))) {
@@ -798,7 +805,7 @@ public class Model extends Observable {
                                         if (line.contains("Rel_ret")) {
                                             String[] lineSplit = line.split(" ");
                                             int ret = Integer.parseInt(lineSplit[lineSplit.length - 1]);
-                                            if (ret>180 ) {
+                                            if (ret>170 ) {
                                                 System.out.printf("new best: Ret= %d   b=%f  k=%f l=%f qw=%f dw=%f tw=%f %n", ret, b, k,l, qw, dw, tw);
                                                 resultToCsv.append(ret + "," + k + "," +b + "," +l+","+ qw + "," + dw + "," + tw + "\n");
                                             }
